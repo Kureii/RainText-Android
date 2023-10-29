@@ -1,4 +1,4 @@
-package cz.kureii.raintext.view
+package cz.kureii.raintext.view.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,8 @@ import cz.kureii.raintext.databinding.DialogPasswordBinding
 import cz.kureii.raintext.model.PasswordItem
 import cz.kureii.raintext.viewmodel.PasswordViewModel
 
-class EditPasswordDialogFragment (private val item: PasswordItem, private val viewModel: PasswordViewModel) :BasePasswordDialogFragment(item) {
+class EditPasswordDialogFragment (private val item: PasswordItem, private val viewModel: PasswordViewModel) :
+    BasePasswordDialogFragment(item) {
 
     private lateinit var localBinding: DialogPasswordBinding
 

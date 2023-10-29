@@ -1,4 +1,4 @@
-package cz.kureii.raintext.view
+package cz.kureii.raintext.view.fragments
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder

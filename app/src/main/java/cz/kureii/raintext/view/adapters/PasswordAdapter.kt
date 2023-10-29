@@ -1,13 +1,17 @@
-package cz.kureii.raintext.view
+package cz.kureii.raintext.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import cz.kureii.raintext.R
 import cz.kureii.raintext.model.PasswordItem
+import cz.kureii.raintext.view.PasswordViewHolder
+import cz.kureii.raintext.viewmodel.PasswordViewModel
+import java.util.Collections
 
 class PasswordAdapter (
-    private val items: List<PasswordItem>,
+    private val items: MutableList<PasswordItem>,
+    private val viewModel: PasswordViewModel,
     private val onDeleteClick: (PasswordItem) -> Unit,
     private val onEditClick: (PasswordItem) -> Unit
     ) : RecyclerView.Adapter<PasswordViewHolder>() {
@@ -24,15 +28,21 @@ class PasswordAdapter (
         holder.bind(item, onDeleteClick, onEditClick)
     }
 
-    /*override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        Collections.swap(items, fromPosition, toPosition)
-        notifyItemMoved(fromPosition, toPosition)
-        return true
+    fun moveItem(from: Int, to: Int) {
+        if (from < to) {
+            for (i in from until to) {
+                Collections.swap(items, i, i + 1)
+            }
+        } else {
+            for (i in from downTo to + 1) {
+                Collections.swap(items, i, i - 1)
+            }
+        }
+        notifyItemMoved(from, to)
     }
 
-    override fun onItemDismiss(position: Int) {
-        // Pokud chceš mazat položky přesunutím, můžeš zde implementovat mazání.
-        // Pro nynější účely je tato metoda prázdná.
-    }*/
+    fun finalizeChanges(from: Int, to: Int) {
+        viewModel.moveItem(from, to)
+    }
 
 }
