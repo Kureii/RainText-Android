@@ -34,7 +34,7 @@ abstract class BasePasswordDialogFragment (
 
     private lateinit var binding: DialogPasswordBinding
 
-    fun expandView(view: View, duration: Long, sleep: Long) {
+    private fun expandView(view: View, duration: Long, sleep: Long) {
         Handler(Looper.getMainLooper()).postDelayed({
             view.visibility = View.VISIBLE
             view.scaleY = 0f
@@ -51,10 +51,10 @@ abstract class BasePasswordDialogFragment (
         }, sleep)
     }
 
-    fun collapseView(view: View, duration: Long, sleep: Long) {
+    private fun collapseView(view: View, duration: Long, sleep: Long) {
         Handler(Looper.getMainLooper()).postDelayed({
-            view.scaleY = 1f  // Výchozí hodnota
-            view.alpha = 1f  // Výchozí hodnota
+            view.scaleY = 1f
+            view.alpha = 1f
 
             val anim = ObjectAnimator.ofPropertyValuesHolder(
                 view,
@@ -156,13 +156,9 @@ abstract class BasePasswordDialogFragment (
                 binding.generatePasswordNumberCharsEditText.setText(progress.toString())
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                // nic
-            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                // nic
-            }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
         binding.generatePasswordNumberCharsEditText.addTextChangedListener(object : TextWatcher {

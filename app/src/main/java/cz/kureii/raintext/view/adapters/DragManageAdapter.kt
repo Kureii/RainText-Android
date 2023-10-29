@@ -47,7 +47,5 @@ class DragManageAdapter(adapter: PasswordAdapter, dragDirs: Int, swipeDirs: Int)
     }
 
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        // Tady můžeš implementovat chování pro posun (swipe), pokud je potřebné
-    }
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
 }

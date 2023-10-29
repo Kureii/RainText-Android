@@ -22,7 +22,6 @@ class PasswordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         titleTextView.text = item.title
         usernameTextView.text = item.username
 
-        // Defaultní zobrazení hesla jako tečky
         passwordTextView.text = "•".repeat(16)
 
         showPasswordIcon.setOnClickListener {

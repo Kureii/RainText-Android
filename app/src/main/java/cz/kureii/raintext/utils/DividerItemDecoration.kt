@@ -24,7 +24,7 @@ class DividerItemDecoration(context: Context, @DimenRes dividerHeight: Int) : Re
         val right = parent.width - parent.paddingRight
 
         val childCount = parent.childCount
-        for (i in 0 until childCount - 1) {  // -1 zajišťuje, že poslední položka nemá oddělovací čáru
+        for (i in 0 until childCount - 1) {
             val child = parent.getChildAt(i)
 
             val params = child.layoutParams as RecyclerView.LayoutParams

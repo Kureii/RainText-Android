@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this).get(PasswordViewModel::class.java)
+        viewModel = ViewModelProvider(this)[PasswordViewModel::class.java]
 
         val recyclerView = findViewById<RecyclerView>(R.id.passwordsRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -72,29 +72,4 @@ class MainActivity : AppCompatActivity() {
             .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
-
-    /*private lateinit var binding: ActivityMainBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        // Example of a call to a native method
-        binding.sampleText.text = stringFromJNI()
-    }
-
-    /**
-     * A native method that is implemented by the 'raintext' native library,
-     * which is packaged with this application.
-     */
-    external fun stringFromJNI(): String
-
-    companion object {
-        // Used to load the 'raintext' library on application startup.
-        init {
-            System.loadLibrary("raintext")
-        }
-    }*/
 }
