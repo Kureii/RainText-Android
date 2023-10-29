@@ -1,3 +1,26 @@
 <resources>
-    <string name="app_name">Rain text</string>
+    <string name="app_name" translatable="false">Rain text</string>
+    <string name="show_password">Show password</string>
+    <string name="headline">Headline</string>
+    <string name="user_name">Username</string>
+    <string name="password">Password</string>
+    <string name="password_again">Password again</string>
+    <string name="close_button">Close</string>
+    <string name="save_button">Save</string>
+    <string name="password_requirements">Password requirements</string>
+    <string name="password_requirements_length">Minimum 8 characters</string>
+    <string name="password_requirements_majuscules">At least one capital letter</string>
+    <string name="password_requirements_minus">At least one lowercase letter</string>
+    <string name="password_requirements_numbers">At least one number</string>
+    <string name="generate_button">Generate password</string>
+    <string name="number_of_chars">Number of characters in the password</string>
+    <string name="generate_include_specials">Include special characters</string>
+    <string name="confirm">Confirm</string>
+    <string name="delete_item">Delete record</string>
+    <string name="warning">Warning</string>
+    <string name="warning_delete_password">Do you really want to permanently delete this record?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="hide_password">Hide password</string>
+    <string name="edit_item">Edit record</string>
 </resources>

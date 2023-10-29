@@ -1,17 +1,16 @@
 package cz.kureii.raintext.view
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import cz.kureii.raintext.R
 import cz.kureii.raintext.model.PasswordItem
 import cz.kureii.raintext.utils.DividerItemDecoration
+//import cz.kureii.raintext.utils.ItemMoveCallback
 import cz.kureii.raintext.viewmodel.PasswordViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -26,45 +25,42 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.passwordsRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = SimplePasswordAdapter(passwordItems)
+        val addButton = findViewById<FloatingActionButton>(R.id.addButton)
+        addButton.setOnClickListener {
+            val dialog = AddPasswordDialogFragment(viewModel)
+            dialog.show(supportFragmentManager, "AddPasswordDialog")
+        }
+        val adapter = PasswordAdapter(passwordItems,
+            onDeleteClick = { selectedItem ->
+                showDeleteConfirmationDialog(selectedItem)
+            },
+            onEditClick = { selectedItem ->
+                val editDialog = EditPasswordDialogFragment(selectedItem, viewModel) // Předpokládáme, že EditPasswordDialogFragment má konstruktor s PasswordItem
+                editDialog.show(supportFragmentManager, "EditPasswordDialog")
+            })
+
         recyclerView.adapter = adapter
 
+
+        val dividerItemDecoration = DividerItemDecoration(this, R.dimen.divider_height)
+        recyclerView.addItemDecoration(dividerItemDecoration)
 
         viewModel.getPasswords().observe(this) { newItems ->
             passwordItems.clear()
             passwordItems.addAll(newItems)
             adapter.notifyDataSetChanged()
         }
-
-        val dividerItemDecoration = DividerItemDecoration(this, R.dimen.divider_height)
-        recyclerView.addItemDecoration(dividerItemDecoration)
     }
 
-    inner class SimplePasswordAdapter(private val items: List<PasswordItem>) : RecyclerView.Adapter<SimplePasswordViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimplePasswordViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_password, parent, false)
-            return SimplePasswordViewHolder(view)
-        }
-
-        override fun getItemCount(): Int = items.size
-
-        override fun onBindViewHolder(holder: SimplePasswordViewHolder, position: Int) {
-            val item = items[position]
-            holder.bind(item)
-        }
-    }
-
-    inner class SimplePasswordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: PasswordItem) {
-            // Zde můžeš například nastavit hodnoty pro jednotlivé TextViews v password_item.xml
-            val titleTextView = itemView.findViewById<TextView>(R.id.titleTextView)
-            val usernameTextView = itemView.findViewById<TextView>(R.id.usernameTextView)
-            val passwordTextView = itemView.findViewById<TextView>(R.id.passwordTextView)
-
-            titleTextView.text = item.title
-            usernameTextView.text = item.username
-            passwordTextView.text = item.password // Možná budeš chtít zobrazit pouze tečky místo skutečného hesla
-        }
+    private fun showDeleteConfirmationDialog(item: PasswordItem) {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.warning))
+            .setMessage(getString(R.string.warning_delete_password))
+            .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                viewModel.deletePassword(item)
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
     }
 
     /*private lateinit var binding: ActivityMainBinding

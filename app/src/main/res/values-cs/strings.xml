@@ -1,0 +1,25 @@
+<resources>
+    <string name="show_password">Zobrazit heslo</string>
+    <string name="headline">Nadpis</string>
+    <string name="user_name">Uživatelké jméno</string>
+    <string name="password">Heslo</string>
+    <string name="password_again">Heslo znovu</string>
+    <string name="close_button">Zavřít</string>
+    <string name="save_button">Uložit</string>
+    <string name="password_requirements">Požadavky na heslo</string>
+    <string name="password_requirements_length">Minimálně 8 znaků</string>
+    <string name="password_requirements_majuscules">Alespoň jedno velké písmeno</string>
+    <string name="password_requirements_minus">Alespoň jedno malé písmeno</string>
+    <string name="password_requirements_numbers">Alespoň jedno číslo</string>
+    <string name="generate_button">Vytvořit heslo</string>
+    <string name="number_of_chars">Počet znaků v hesle</string>
+    <string name="generate_include_specials">Zahrnout speciální znaky</string>
+    <string name="confirm">Potvrdit</string>
+    <string name="delete_item">Smazat záznam</string>
+    <string name="warning">Varování</string>
+    <string name="warning_delete_password">Opravdu chceš nenávratně smazat tento záznam?</string>
+    <string name="delete">Smazat</string>
+    <string name="cancel">Zrušit</string>
+    <string name="hide_password">Skrýt heslo</string>
+    <string name="edit_item">Upravit záznam</string>
+</resources>
