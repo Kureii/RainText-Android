@@ -28,4 +28,12 @@
     <string name="time_in_clipboard_tooltip">The length of time the copied data is stored in the clipboard</string>
     <string name="turn_off_time">Turn off time</string>
     <string name="turn_off_time_tooltip">Time for the app to shut down when in the background (requires logging in again)</string>
+    <string name="add_item">Add record</string>
+    <string name="system">System</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="theme">Theme</string>
+    <string name="security">Security</string>
+    <string name="password_copied">Password copied</string>
+    <string name="username_copied">Username copied</string>
 </resources>
