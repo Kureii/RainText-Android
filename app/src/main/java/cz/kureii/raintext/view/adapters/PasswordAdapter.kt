@@ -1,5 +1,6 @@
 package cz.kureii.raintext.view.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,18 +8,21 @@ import cz.kureii.raintext.R
 import cz.kureii.raintext.model.PasswordItem
 import cz.kureii.raintext.view.PasswordViewHolder
 import cz.kureii.raintext.viewmodel.PasswordViewModel
+import cz.kureii.raintext.utils.ClipboardUtility
 import java.util.Collections
 
 class PasswordAdapter (
     private val items: MutableList<PasswordItem>,
     private val viewModel: PasswordViewModel,
     private val onDeleteClick: (PasswordItem) -> Unit,
-    private val onEditClick: (PasswordItem) -> Unit
+    private val onEditClick: (PasswordItem) -> Unit,
+    private val context: Context
     ) : RecyclerView.Adapter<PasswordViewHolder>() {
+    private val clipboardUtility = ClipboardUtility(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PasswordViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_password, parent, false)
-        return PasswordViewHolder(view)
+        return PasswordViewHolder(view, clipboardUtility)
     }
 
     override fun getItemCount(): Int = items.size
@@ -44,5 +48,7 @@ class PasswordAdapter (
     fun finalizeChanges(from: Int, to: Int) {
         viewModel.moveItem(from, to)
     }
+
+
 
 }

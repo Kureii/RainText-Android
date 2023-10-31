@@ -1,20 +1,23 @@
 package cz.kureii.raintext.viewmodel
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import cz.kureii.raintext.model.PasswordItem
+import cz.kureii.raintext.model.PasswordDatabaseHelper
 
-class PasswordViewModel : ViewModel() {
+class PasswordViewModel(application: Application) : AndroidViewModel(application) {
     private val _passwords = MutableLiveData<MutableList<PasswordItem>>()
+    private val dbHelper = PasswordDatabaseHelper(application)
 
     init {
-        _passwords.value = mutableListOf(
-            PasswordItem(0, "Nadpis 1", "Uživatel1", "Heslo123"),
-            PasswordItem(1, "Nadpis 2", "Uživatel2", "Heslo456"),
-            PasswordItem(2, "Nadpis 3", "Uživatel3", "Heslo789")
-            // další pevné hodnoty...
-        )
+        loadPasswordsFromDatabase()
+    }
+
+    private fun loadPasswordsFromDatabase() {
+        val passwords = dbHelper.getAllPasswords()
+        _passwords.value = passwords
     }
 
     fun getPasswords(): MutableLiveData<MutableList<PasswordItem>> {

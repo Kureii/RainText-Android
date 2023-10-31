@@ -214,14 +214,15 @@ abstract class BasePasswordDialogFragment (
     override fun onStart() {
         super.onStart()
         dialog?.window?.let { window ->
-            val windowParams = WindowManager.LayoutParams()
-            windowParams.copyFrom(window.attributes)
+            val windowParams = window.attributes
 
             val displayMetrics = resources.displayMetrics
             val dialogWidth = (displayMetrics.widthPixels * 0.9).toInt()
 
             windowParams.width = dialogWidth
             windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+            windowParams.dimAmount = 0.7f
+
             window.attributes = windowParams
         }
     }
@@ -326,4 +327,5 @@ abstract class BasePasswordDialogFragment (
         onViewsCreated(view, savedInstanceState)
     }
     abstract fun onViewsCreated(view: View, savedInstanceState: Bundle?)
+
 }

@@ -1,13 +1,17 @@
 package cz.kureii.raintext.view
 
+import android.content.Context
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import cz.kureii.raintext.R
 import cz.kureii.raintext.model.PasswordItem
+import cz.kureii.raintext.utils.ClipboardUtility
 
-class PasswordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class PasswordViewHolder(itemView: View, private val clipboardUtility: ClipboardUtility) :
+    RecyclerView.ViewHolder(itemView) {
     private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteIconButton)
     private val passwordTextView: TextView = itemView.findViewById(R.id.passwordTextView)
     private val showPasswordIcon: ImageButton = itemView.findViewById(R.id.showPasswordIcon)
@@ -15,7 +19,11 @@ class PasswordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private var isPasswordVisible = false
 
-    fun bind(item: PasswordItem, onDeleteClick: (PasswordItem) -> Unit, onEditClick: (PasswordItem) ->Unit) {
+    fun bind(
+        item: PasswordItem,
+        onDeleteClick: (PasswordItem) -> Unit,
+        onEditClick: (PasswordItem) -> Unit
+    ) {
         val titleTextView = itemView.findViewById<TextView>(R.id.titleTextView)
         val usernameTextView = itemView.findViewById<TextView>(R.id.usernameTextView)
 
@@ -43,8 +51,26 @@ class PasswordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
 
         val editButton: ImageButton = itemView.findViewById(R.id.editIcon)
-        editButton.setOnClickListener{
+        editButton.setOnClickListener {
             onEditClick(item)
         }
+        val context = itemView.context
+        val sharedPref = context.getSharedPreferences("SAFETY", Context.MODE_PRIVATE)
+        val defaultValue = 30
+        val storedValue = sharedPref.getInt("Clipboard_Time", defaultValue).toLong()
+
+
+        passwordTextView.setOnLongClickListener {
+            clipboardUtility.copyPassword(item.password, storedValue)
+            Toast.makeText(it.context, "Heslo zkopírováno", Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        usernameTextView.setOnLongClickListener {
+            clipboardUtility.copyUsername(item.username, storedValue)
+            Toast.makeText(it.context, "Uživatelské jméno zkopírováno", Toast.LENGTH_SHORT).show()
+            true
+        }
+
     }
 }
