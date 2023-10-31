@@ -1,10 +1,14 @@
 package cz.kureii.raintext.view.activities
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +30,9 @@ import cz.kureii.raintext.viewmodel.PasswordViewModel
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: PasswordViewModel
     private val passwordItems = mutableListOf<PasswordItem>()
-
+    private val handler = Handler(Looper.getMainLooper())
+    private val runnable = Runnable {finish()}
+    private val sharedPref: SharedPreferences by lazy { getSharedPreferences("SAFETY", Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         val addButton = findViewById<FloatingActionButton>(R.id.addButton)
         addButton.setOnClickListener {
-            val dialog = AddPasswordDialogFragment(viewModel)
+            val dialog = AddPasswordDialogFragment(viewModel, this.getString(R.string.add_item))
             dialog.show(supportFragmentManager, "AddPasswordDialog")
         }
         val adapter = PasswordAdapter(passwordItems,
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 showDeleteConfirmationDialog(selectedItem)
             },
             onEditClick = { selectedItem ->
-                val editDialog = EditPasswordDialogFragment(selectedItem, viewModel)
+                val editDialog = EditPasswordDialogFragment(selectedItem, viewModel, this.getString(R.string.edit_item))
                 editDialog.show(supportFragmentManager, "EditPasswordDialog")
             }, this)
 
@@ -64,6 +70,11 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
         }
 
+        viewModel.clipboardTime.observe(this, Observer { newValue ->
+            adapter.updateClipboardTime(newValue)
+        })
+
+
         val callback = DragManageAdapter(adapter, ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
         val helper = ItemTouchHelper(callback)
         helper.attachToRecyclerView(recyclerView)
@@ -73,12 +84,16 @@ class MainActivity : AppCompatActivity() {
         val bottomSheetHeaderLayout: LinearLayout = findViewById(R.id.bottomSheetSettingsMainActivityLayout)
 
         bottomSheetHeaderLayout.setOnTouchListener { v, event ->
-            Log.i("MainActivity", "tap or drag")
             val bottomSheetFragment = BottomSheetSettingsFragment()
             bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
             bottomSheetHeaderLayout.performClick()
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        handler.removeCallbacks(runnable)
     }
 
     override fun onStop() {
@@ -91,11 +106,13 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         WorkManager.getInstance(this).enqueue(savePasswordWorkRequest)
+        val delayMillis = sharedPref.getInt("Turn_Off_Time", R.integer.turnOffTime) * 1000L
+        handler.postDelayed(runnable, delayMillis)
     }
 
 
     private fun showDeleteConfirmationDialog(item: PasswordItem) {
-        AlertDialog.Builder(this)
+        AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .setTitle(getString(R.string.warning))
             .setMessage(getString(R.string.warning_delete_password))
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
@@ -103,5 +120,6 @@ class MainActivity : AppCompatActivity() {
             }
             .setNegativeButton(getString(R.string.cancel), null)
             .show()
+
     }
 }
