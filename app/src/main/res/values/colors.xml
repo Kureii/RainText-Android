@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="Primary">#FFFF9800</color>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="Primary_700">#FFFF9800</color>
+    <color name="Primary_800">#FFCE7B01</color>
+    <color name="Secondary_500">#FF032C54</color>
+    <color name="Secondary_700">#FF021F3C</color>
+    <color name="Logo_background">#FFFF9800</color>
+    <color name="Logo_foreground">#FF021F3C</color>
+    <color name="Text">#0C011C</color>
+    <color name="Background">#ECDFD4</color>
+    <color name="Settings_background">#ECDED3</color>
+    <color name="Settings_background_shadow">#77101012</color>
+    <color name="Text_input_background">#D1C7BE</color>
+    <color name="Item_background">#F8EBE1</color>
+    <color name="Fragment_absolute_background">#1A1C0343</color>
+    <color name="Fragment_absolute_corners">#A19595</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="OK">#6BC008</color>

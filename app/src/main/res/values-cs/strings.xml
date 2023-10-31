@@ -22,4 +22,9 @@
     <string name="cancel">Zrušit</string>
     <string name="hide_password">Skrýt heslo</string>
     <string name="edit_item">Upravit záznam</string>
+    <string name="settings_description">Nastavení</string>
+    <string name="time_in_clipboard">Čas ve schránce</string>
+    <string name="time_in_clipboard_tooltip">Doba po kterou jsou zkopírované údaje uloženy ve schránce</string>
+    <string name="turn_off_time">Čas vypnutí</string>
+    <string name="turn_off_time_tooltip">Čas za který se aplikace vypne když je na pozadí (vyžaduje znovu přihlášení)</string>
 </resources>

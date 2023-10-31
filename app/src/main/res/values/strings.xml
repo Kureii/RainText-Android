@@ -23,4 +23,9 @@
     <string name="cancel">Cancel</string>
     <string name="hide_password">Hide password</string>
     <string name="edit_item">Edit record</string>
+    <string name="settings_description">Settings</string>
+    <string name="time_in_clipboard">Time in clipboard</string>
+    <string name="time_in_clipboard_tooltip">The length of time the copied data is stored in the clipboard</string>
+    <string name="turn_off_time">Turn off time</string>
+    <string name="turn_off_time_tooltip">Time for the app to shut down when in the background (requires logging in again)</string>
 </resources>

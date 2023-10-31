@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Text">#FFF4E9</color>
+    <color name="Background">#201B23</color>
+    <color name="Item_background">#151217</color>
+    <color name="Text_input_background">#1A161C</color>
+    <color name="Settings_background">#120F13</color>
+    <color name="Settings_background_shadow">#77AB5500</color>
+    <color name="Fragment_absolute_background">#1AF57C00</color>
+    <color name="Fragment_absolute_corners">#8C120700</color>
+</resources>

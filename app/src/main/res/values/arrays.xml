@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="clipboard_time">
+        <item>15s</item>
+        <item>20s</item>
+        <item>25s</item>
+        <item>30s</item>
+        <item>35s</item>
+        <item>40s</item>
+        <item>45s</item>
+        <item>50s</item>
+        <item>55s</item>
+        <item>60s</item>
+    </string-array>
+    <string-array name="turn_off_time">
+        <item>30s</item>
+        <item>45s</item>
+        <item>60s</item>
+        <item>75s</item>
+        <item>90s</item>
+        <item>105s</item>
+        <item>120s</item>
+    </string-array>
+</resources>
