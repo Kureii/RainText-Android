@@ -70,7 +70,7 @@ class BottomSheetSettingsFragment : BottomSheetDialogFragment() {
         // Turn-off time
         fillSpinner(
             spinner = binding.turnOffTime,
-            options = resources.getStringArray(R.array.clipboard_time).toList(),
+            options = resources.getStringArray(R.array.turn_off_time).toList(),
             sharedPrefKey = "Turn_Off_Time",
             sharedPrefName = "SAFETY",
             defaultPrefValue = R.integer.turnOffTime,
