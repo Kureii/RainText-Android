@@ -29,6 +29,7 @@ import cz.kureii.raintext.model.PasswordItem
 import cz.kureii.raintext.utils.PasswordGenerator
 
 abstract class BasePasswordDialogFragment (
+    private val dialogHeadline: String,
     private val passwordItem: PasswordItem? = null
 ) :DialogFragment() {
 
@@ -81,6 +82,8 @@ abstract class BasePasswordDialogFragment (
         savedInstanceState: Bundle?
     ): View? {
         binding = DialogPasswordBinding.inflate(inflater, container, false)
+
+        binding.dialogPasswordHeadline.text = dialogHeadline
 
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}

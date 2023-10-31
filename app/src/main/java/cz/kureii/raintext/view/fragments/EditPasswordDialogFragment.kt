@@ -6,8 +6,8 @@ import cz.kureii.raintext.databinding.DialogPasswordBinding
 import cz.kureii.raintext.model.PasswordItem
 import cz.kureii.raintext.viewmodel.PasswordViewModel
 
-class EditPasswordDialogFragment (private val item: PasswordItem, private val viewModel: PasswordViewModel) :
-    BasePasswordDialogFragment(item) {
+class EditPasswordDialogFragment (private val item: PasswordItem, private val viewModel: PasswordViewModel, dialogHeadline: String) :
+    BasePasswordDialogFragment(dialogHeadline, item) {
 
     private lateinit var localBinding: DialogPasswordBinding
 

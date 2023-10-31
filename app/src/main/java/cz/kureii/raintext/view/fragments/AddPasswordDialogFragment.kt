@@ -5,8 +5,8 @@ import android.view.View
 import cz.kureii.raintext.databinding.DialogPasswordBinding
 import cz.kureii.raintext.viewmodel.PasswordViewModel
 
-class AddPasswordDialogFragment(private val viewModel: PasswordViewModel) :
-    BasePasswordDialogFragment() {
+class AddPasswordDialogFragment(private val viewModel: PasswordViewModel, dialogHeadline: String) :
+    BasePasswordDialogFragment(dialogHeadline) {
 
     private lateinit var localBinding: DialogPasswordBinding
 
