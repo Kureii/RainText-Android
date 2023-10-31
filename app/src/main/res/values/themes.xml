@@ -19,4 +19,19 @@
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
     </style>
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/Primary_800</item>
+        <item name="colorPrimaryVariant">@color/Primary_700</item>
+        <item name="colorOnPrimary">@color/Secondary_700</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/Secondary_500</item>
+        <item name="colorSecondaryVariant">@color/Secondary_700</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/Secondary_700</item>
+        <item name="android:background">@color/Background</item>
+        <item name="android:textColor">@color/Text</item>
+        <item name="android:textColorPrimary">@color/Text</item>
+    </style>
+
 </resources>

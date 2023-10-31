@@ -18,5 +18,18 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:colorBackgroundCacheHint">@color/Fragment_absolute_background</item>
     </style>
-
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/Primary_700</item>
+        <item name="colorPrimaryVariant">@color/Primary_800</item>
+        <item name="colorOnPrimary">@color/Primary_700</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/Primary_700</item>
+        <item name="colorSecondaryVariant">@color/Primary_800</item>
+        <item name="colorOnSecondary">@color/Primary_700</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:background">@color/Background</item>
+        <item name="android:textColor">@color/Text</item>
+        <item name="android:textColorPrimary">@color/Text</item>
+    </style>
 </resources>
