@@ -15,6 +15,7 @@
         <item name="android:backgroundDimAmount">0.25</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:colorBackgroundCacheHint">@color/Fragment_absolute_background</item>
+        <item name="android:fontFamily">@font/nunito_font_family_light_theme</item>
     </style>
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
@@ -32,6 +33,7 @@
         <item name="android:background">@color/Background</item>
         <item name="android:textColor">@color/Text</item>
         <item name="android:textColorPrimary">@color/Text</item>
+        <item name="android:fontFamily">@font/nunito_font_family_light_theme</item>
     </style>
 
 </resources>

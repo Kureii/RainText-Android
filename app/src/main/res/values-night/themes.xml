@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/nunito_font_family_dark_theme</item>
     </style>
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:backgroundDimAmount">0.25</item>
@@ -31,5 +32,6 @@
         <item name="android:background">@color/Background</item>
         <item name="android:textColor">@color/Text</item>
         <item name="android:textColorPrimary">@color/Text</item>
+        <item name="android:fontFamily">@font/nunito_font_family_dark_theme</item>
     </style>
 </resources>
