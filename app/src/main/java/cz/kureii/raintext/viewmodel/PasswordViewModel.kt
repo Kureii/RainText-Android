@@ -1,6 +1,8 @@
 package cz.kureii.raintext.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -10,10 +12,34 @@ import cz.kureii.raintext.model.PasswordDatabaseHelper
 class PasswordViewModel(application: Application) : AndroidViewModel(application) {
     private val _passwords = MutableLiveData<MutableList<PasswordItem>>()
     private val dbHelper = PasswordDatabaseHelper(application)
+    private val sharedPref: SharedPreferences = application.getSharedPreferences("SAFETY", Context.MODE_PRIVATE)
+    private val defaultClipboardTime = cz.kureii.raintext.R.integer.clipboardTime
+
+    val clipboardTime: MutableLiveData<Long> = MutableLiveData()
+
+    private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == "Clipboard_Time") {
+            updateClipboardTime()
+        }
+    }
+    private fun updateClipboardTime() {
+        val storedValue = sharedPref.getInt("Clipboard_Time", defaultClipboardTime).toLong()
+        clipboardTime.value = storedValue
+    }
 
     init {
         loadPasswordsFromDatabase()
+        val storedValue = sharedPref.getInt("Clipboard_Time", defaultClipboardTime).toLong()
+        clipboardTime.value = storedValue
+        sharedPref.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
+
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        sharedPref.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
+    }
+
 
     private fun loadPasswordsFromDatabase() {
         val passwords = dbHelper.getAllPasswords()
@@ -23,6 +49,7 @@ class PasswordViewModel(application: Application) : AndroidViewModel(application
     fun getPasswords(): MutableLiveData<MutableList<PasswordItem>> {
         return this._passwords
     }
+
 
     fun addPassword(title: String, username: String, password: String) {
         val newItem = PasswordItem(_passwords.value?.size ?: 0, title, username, password)
@@ -44,7 +71,7 @@ class PasswordViewModel(application: Application) : AndroidViewModel(application
             currentList[index] = updatedItem
             _passwords.postValue(currentList)
         } else {
-            Log.e("PasswordViewModel", "Nenalezena položka s ID $id")
+            Log.e("PasswordViewModel", "Item with ID not found $id")
         }
     }
 
@@ -63,7 +90,7 @@ class PasswordViewModel(application: Application) : AndroidViewModel(application
             refreshIds()
             _passwords.postValue(currentList)
         } else {
-            Log.e("PasswordViewModel", "Neplatné indexy pro přesunutí: from $from, to $to")
+            Log.e("PasswordViewModel", "Invalid indices for moving: from $from, to $to")
         }
     }
 
@@ -73,14 +100,6 @@ class PasswordViewModel(application: Application) : AndroidViewModel(application
             passwordItem.id = index
         }
         _passwords.postValue(_passwords.value)
-        _passwords.value?.forEachIndexed { index, passwordItem ->
-            val id = passwordItem.id
-            val headline = passwordItem.title
-            val username = passwordItem.username
-            val password = passwordItem.password
-            Log.i("PasswordViewModel", " id: $id, headline: $headline, username: $username, password: $password")
-
-        }
     }
 }
 

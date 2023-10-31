@@ -1,6 +1,7 @@
 package cz.kureii.raintext.view.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +17,10 @@ class PasswordAdapter (
     private val viewModel: PasswordViewModel,
     private val onDeleteClick: (PasswordItem) -> Unit,
     private val onEditClick: (PasswordItem) -> Unit,
-    private val context: Context
+    private val context: Context,
     ) : RecyclerView.Adapter<PasswordViewHolder>() {
     private val clipboardUtility = ClipboardUtility(context)
+    private var currentClipboardTime: Long = R.integer.clipboardTime.toLong()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PasswordViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_password, parent, false)
@@ -29,7 +31,15 @@ class PasswordAdapter (
 
     override fun onBindViewHolder(holder: PasswordViewHolder, position: Int) {
         val item = items[position]
-        holder.bind(item, onDeleteClick, onEditClick)
+        Log.d("PasswordAdapter","onBindViewHolder currentClipboardTime: $currentClipboardTime")
+        holder.bind(item, onDeleteClick, onEditClick, currentClipboardTime)
+    }
+
+
+    fun updateClipboardTime(newValue: Long) {
+        Log.d("updateClipboardTime","onBindViewHolder currentClipboardTime: $currentClipboardTime")
+        currentClipboardTime = newValue
+        notifyDataSetChanged()
     }
 
     fun moveItem(from: Int, to: Int) {

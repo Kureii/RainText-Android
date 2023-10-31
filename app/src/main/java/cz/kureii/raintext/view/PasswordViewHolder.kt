@@ -1,6 +1,6 @@
 package cz.kureii.raintext.view
 
-import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -22,7 +22,8 @@ class PasswordViewHolder(itemView: View, private val clipboardUtility: Clipboard
     fun bind(
         item: PasswordItem,
         onDeleteClick: (PasswordItem) -> Unit,
-        onEditClick: (PasswordItem) -> Unit
+        onEditClick: (PasswordItem) -> Unit,
+        clipboardTime: Long
     ) {
         val titleTextView = itemView.findViewById<TextView>(R.id.titleTextView)
         val usernameTextView = itemView.findViewById<TextView>(R.id.usernameTextView)
@@ -54,23 +55,22 @@ class PasswordViewHolder(itemView: View, private val clipboardUtility: Clipboard
         editButton.setOnClickListener {
             onEditClick(item)
         }
-        val context = itemView.context
-        val sharedPref = context.getSharedPreferences("SAFETY", Context.MODE_PRIVATE)
-        val defaultValue = 30
-        val storedValue = sharedPref.getInt("Clipboard_Time", defaultValue).toLong()
-
 
         passwordTextView.setOnLongClickListener {
-            clipboardUtility.copyPassword(item.password, storedValue)
-            Toast.makeText(it.context, "Heslo zkopírováno", Toast.LENGTH_SHORT).show()
+            Log.i("PasswordViewHolder", "Clipboard stored value: $clipboardTime")
+            clipboardUtility.copyPassword(item.password, clipboardTime)
+            Toast.makeText(it.context, itemView.context.getString(R.string.password_copied), Toast.LENGTH_SHORT).show()
             true
         }
 
         usernameTextView.setOnLongClickListener {
-            clipboardUtility.copyUsername(item.username, storedValue)
-            Toast.makeText(it.context, "Uživatelské jméno zkopírováno", Toast.LENGTH_SHORT).show()
+            Log.i("PasswordViewHolder", "Clipboard stored value: $clipboardTime")
+            clipboardUtility.copyUsername(item.username, clipboardTime)
+            Toast.makeText(it.context, itemView.context.getString(R.string.username_copied), Toast.LENGTH_SHORT).show()
             true
         }
 
     }
+
+
 }
