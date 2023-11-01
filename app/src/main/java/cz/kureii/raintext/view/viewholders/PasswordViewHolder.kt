@@ -1,17 +1,16 @@
-package cz.kureii.raintext.view
+package cz.kureii.raintext.view.viewholders
 
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import cz.kureii.raintext.R
 import cz.kureii.raintext.model.PasswordItem
 import cz.kureii.raintext.utils.ClipboardUtility
 
 class PasswordViewHolder(itemView: View, private val clipboardUtility: ClipboardUtility) :
-    RecyclerView.ViewHolder(itemView) {
+    BasePasswordViewHolder(itemView) {
     private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteIconButton)
     private val passwordTextView: TextView = itemView.findViewById(R.id.passwordTextView)
     private val showPasswordIcon: ImageButton = itemView.findViewById(R.id.showPasswordIcon)

@@ -27,6 +27,10 @@ class DragManageAdapter(adapter: PasswordAdapter, dragDirs: Int, swipeDirs: Int)
     ): Boolean {
         val localFromPosition = viewHolder.adapterPosition
         targetPosition = target.adapterPosition
+
+        if (targetPosition == passwordAdapter.itemCount - 1) {
+            return false
+        }
         (recyclerView.adapter as? PasswordAdapter)?.moveItem(localFromPosition, targetPosition)
         return true
     }

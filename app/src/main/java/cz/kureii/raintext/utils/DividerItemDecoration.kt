@@ -24,15 +24,15 @@ class DividerItemDecoration(context: Context, @DimenRes dividerHeight: Int) : Re
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         val left = parent.paddingLeft
-        val right = parent.width - parent.paddingRight  // šířka parenta
+        val right = parent.width - parent.paddingRight
 
         val childCount = parent.childCount
-        for (i in 0 until childCount - 1) {
+        for (i in 0 until childCount - 2) {
             val child = parent.getChildAt(i)
 
             val params = child.layoutParams as RecyclerView.LayoutParams
 
-            val top = child.bottom + params.bottomMargin - mOffset  // posun o 2dp výše
+            val top = child.bottom + params.bottomMargin - mOffset
             val bottom = top + mDividerHeight
 
             mDivider?.setBounds(left, top, right, bottom)
