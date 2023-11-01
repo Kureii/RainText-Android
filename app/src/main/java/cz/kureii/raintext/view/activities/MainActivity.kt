@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -114,9 +115,12 @@ class MainActivity : AppCompatActivity() {
     private fun showDeleteConfirmationDialog(item: PasswordItem) {
         AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .setTitle(getString(R.string.warning))
-            .setMessage(getString(R.string.warning_delete_password))
+            .setMessage(getString(R.string.warning_delete_password) + " (\"" + item.title + "\")")
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                val infoString = getString(R.string.item) + " \"" + item.title + "\" " + getString(R.string.was_deleted)
                 viewModel.deletePassword(item)
+                Toast.makeText(this, infoString, Toast.LENGTH_SHORT).show()
+
             }
             .setNegativeButton(getString(R.string.cancel), null)
             .show()

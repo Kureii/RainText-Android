@@ -3,7 +3,7 @@
     <string name="headline">Nadpis</string>
     <string name="user_name">Uživatelké jméno</string>
     <string name="password">Heslo</string>
-    <string name="password_again">Heslo znovu</string>
+    <string name="item_deleted">Záznam smazán</string>
     <string name="close_button">Zavřít</string>
     <string name="save_button">Uložit</string>
     <string name="password_requirements">Požadavky na heslo</string>
@@ -35,4 +35,6 @@
     <string name="security">Bezpečnost</string>
     <string name="password_copied">Heslo zkopírováno</string>
     <string name="username_copied">Uživatelské jméno zkopírováno</string>
+    <string name="item">Záznam</string>
+    <string name="was_deleted">byl smazán.</string>
 </resources>
