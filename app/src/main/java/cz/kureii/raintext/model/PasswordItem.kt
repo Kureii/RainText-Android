@@ -6,11 +6,16 @@ import org.json.JSONObject
 
 data class PasswordItem(
     var id: Int,
-    val title: String,
-    val username: String,
-    val password: String
+    var title: String,
+    var username: String,
+    var password: String,
+    var encryptedData: ByteArray
 ) {
-
+    fun clear() {
+        title = ""
+        username = ""
+        password = ""
+    }
     companion object {
 
         fun passwordItemListToData(passwordItems: List<PasswordItem>): Data {
@@ -36,7 +41,8 @@ data class PasswordItem(
                     jsonObject.getInt("id"),
                     jsonObject.getString("title"),
                     jsonObject.getString("username"),
-                    jsonObject.getString("password")
+                    jsonObject.getString("password"),
+                    ByteArray(0)
                 )
                 passwordItems.add(item)
             }

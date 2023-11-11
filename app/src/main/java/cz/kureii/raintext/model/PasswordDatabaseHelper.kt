@@ -13,17 +13,13 @@ class PasswordDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATAB
 
         const val TABLE_NAME = "records"
         const val COLUMN_ID = "id"
-        const val COLUMN_TITLE = "title"
-        const val COLUMN_USERNAME = "username"
-        const val COLUMN_PASSWORD = "password"
+        const val COLUMN_DATA = "data"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
         val createTableSQL = "CREATE TABLE $TABLE_NAME (" +
                 "$COLUMN_ID INTEGER PRIMARY KEY," +
-                "$COLUMN_TITLE TEXT," +
-                "$COLUMN_USERNAME TEXT," +
-                "$COLUMN_PASSWORD TEXT)"
+                "$COLUMN_DATA BLOB)"
         db.execSQL(createTableSQL)
     }
 
@@ -34,9 +30,7 @@ class PasswordDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATAB
 
     fun insertPassword(item: PasswordItem): Long {
         val values = ContentValues().apply {
-            put(COLUMN_TITLE, item.title)
-            put(COLUMN_USERNAME, item.username)
-            put(COLUMN_PASSWORD, item.password)
+            put(COLUMN_DATA, item.encryptedData)
         }
         return writableDatabase.insert(TABLE_NAME, null, values)
     }
@@ -55,10 +49,8 @@ class PasswordDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATAB
         if (cursor.moveToFirst()) {
             do {
                 val id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
-                val title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE))
-                val username = cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME))
-                val password = cursor.getString(cursor.getColumnIndex(COLUMN_PASSWORD))
-                passwords.add(PasswordItem(id, title, username, password))
+                val encryptedData = cursor.getBlob(cursor.getColumnIndex(COLUMN_DATA))
+                passwords.add(PasswordItem(id, "", "", "",encryptedData))
             } while (cursor.moveToNext())
         }
         cursor.close()

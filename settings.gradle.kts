@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Rain text"
+rootProject.name = "RainText"
 include(":app")
  

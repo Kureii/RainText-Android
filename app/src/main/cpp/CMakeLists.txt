@@ -3,7 +3,8 @@
 # For more examples on how to use CMake, see https://github.com/android/ndk-samples.
 
 # Sets the minimum CMake version required for this project.
-cmake_minimum_required(VERSION 3.22.1)
+cmake_minimum_required(VERSION 3.22)
+
 
 # Declares the project name. The project name can be accessed via ${ PROJECT_NAME},
 # Since this is the top level CMakeLists.txt, the project name is also accessible
@@ -28,18 +29,76 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
         # List C/C++ source files with relative paths to this CMakeLists.txt.
         native-lib.cpp)
 
-# Detekce cílové architektury a nastavení cesty k odpovídající knihovně
-set(RAIN_TEXT_CORE_LIB_PATH ${CMAKE_SOURCE_DIR}/lib/${ANDROID_ABI}/libRainTextCore.a)
+message(${ANDROID_ABI})
 
-# Linkování knihovny
+add_subdirectory(sha3)
+
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/sha3)
+
+if((${ANDROID_ABI} STREQUAL "arm64-v8a") OR (${ANDROID_ABI} STREQUAL "x86_64"))
+    set(CPU_FEATURES_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ANDROID_ABI}/libcpu_features.a)
+    set(NDK_COMPAT_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ANDROID_ABI}/libndk_compat.a)
+
+    add_library(Cpu_features STATIC IMPORTED)
+    set_target_properties(Cpu_features PROPERTIES IMPORTED_LOCATION ${CPU_FEATURES_LIB_PATH})
+
+    add_library(Ndk_compat STATIC IMPORTED)
+    set_target_properties(Ndk_compat PROPERTIES IMPORTED_LOCATION ${NDK_COMPAT_LIB_PATH})
+endif()
+
+set(ARGON2_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ANDROID_ABI}/libArgon2.a)
+set(BLAKE2_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ANDROID_ABI}/libBlake2.a)
+set(RAIN_TEXT_CORE_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ANDROID_ABI}/libRainTextCore.a)
+set(SCRYPT_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ANDROID_ABI}/libscrypt.a)
+set(CRYPTOPP_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ANDROID_ABI}/libcryptopp.a)
+set(INTRINSICS_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/${ANDROID_ABI}/libIntrinsics.a)
+
+
+add_library(Argon2 STATIC IMPORTED)
+set_target_properties(Argon2 PROPERTIES IMPORTED_LOCATION ${ARGON2_LIB_PATH})
+
+add_library(Blake2 STATIC IMPORTED)
+set_target_properties(Blake2 PROPERTIES IMPORTED_LOCATION ${BLAKE2_LIB_PATH})
+
+add_library(Intrinsics STATIC IMPORTED)
+set_target_properties(Intrinsics PROPERTIES IMPORTED_LOCATION ${INTRINSICS_LIB_PATH})
+
+add_library(Cryptopp STATIC IMPORTED)
+set_target_properties(Cryptopp PROPERTIES IMPORTED_LOCATION ${CRYPTOPP_LIB_PATH})
+
+add_library(Scrypt STATIC IMPORTED)
+set_target_properties(Scrypt PROPERTIES IMPORTED_LOCATION ${SCRYPT_LIB_PATH})
+
 add_library(RainTextCore STATIC IMPORTED)
 set_target_properties(RainTextCore PROPERTIES IMPORTED_LOCATION ${RAIN_TEXT_CORE_LIB_PATH})
 
 # Specifies libraries CMake should link to your target library. You
 # can link libraries from various origins, such as libraries defined in this
 # build script, prebuilt third-party libraries, or Android system libraries.
-target_link_libraries(${CMAKE_PROJECT_NAME}
-        # List libraries link to the target library
-        android
-        log
-        RainTextCore)
+if((${ANDROID_ABI} STREQUAL "arm64-v8a") OR (${ANDROID_ABI} STREQUAL "x86_64"))
+    target_link_libraries(${CMAKE_PROJECT_NAME}
+            # List libraries link to the target library
+            android
+            log
+            RainTextCore
+            sha3lib::sha3
+            Argon2
+            Blake2
+            Cpu_features
+            Ndk_compat
+            Intrinsics
+            Cryptopp
+            Scrypt)
+else()
+    target_link_libraries(${CMAKE_PROJECT_NAME}
+            # List libraries link to the target library
+            android
+            log
+            RainTextCore
+            sha3lib::sha3
+            Argon2
+            Blake2
+            Intrinsics
+            Cryptopp
+            Scrypt)
+endif()

@@ -11,7 +11,7 @@ import cz.kureii.raintext.R
 import cz.kureii.raintext.model.PasswordItem
 import cz.kureii.raintext.view.viewholders.PasswordViewHolder
 import cz.kureii.raintext.viewmodel.PasswordViewModel
-import cz.kureii.raintext.utils.ClipboardUtility
+import cz.kureii.raintext.utils.security.ClipboardUtility
 import cz.kureii.raintext.view.viewholders.BasePasswordViewHolder
 import java.util.Collections
 

@@ -7,7 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import cz.kureii.raintext.R
 import cz.kureii.raintext.model.PasswordItem
-import cz.kureii.raintext.utils.ClipboardUtility
+import cz.kureii.raintext.utils.security.ClipboardUtility
 
 class PasswordViewHolder(itemView: View, private val clipboardUtility: ClipboardUtility) :
     BasePasswordViewHolder(itemView) {

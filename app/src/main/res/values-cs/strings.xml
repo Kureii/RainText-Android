@@ -37,4 +37,9 @@
     <string name="username_copied">Uživatelské jméno zkopírováno</string>
     <string name="item">Záznam</string>
     <string name="was_deleted">byl smazán.</string>
+    <string name="app_shut_down">Aplikace byla ukončena z bezpečnostních důvodů.</string>
+    <string name="debug_tool_connected">je připojen ladící nástroj</string>
+    <string name="emulator_detected">Bylo detekováno, že aplikace běží na emulátoru.</string>
+    <string name="device_rooted">zařízení je rootované</string>
+    <string name="decrypting">Dešifrování: %1$d%%</string>
 </resources>

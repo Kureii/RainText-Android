@@ -5,23 +5,44 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import cz.kureii.raintext.model.EncryptionManager
 import cz.kureii.raintext.model.PasswordItem
 import cz.kureii.raintext.model.PasswordDatabaseHelper
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class PasswordViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class PasswordViewModel @Inject constructor(
+    application: Application,
+    private val encryptionManager: EncryptionManager
+) : AndroidViewModel(application) {
     private val _passwords = MutableLiveData<MutableList<PasswordItem>>()
     private val dbHelper = PasswordDatabaseHelper(application)
-    private val sharedPref: SharedPreferences = application.getSharedPreferences("SAFETY", Context.MODE_PRIVATE)
+    private val sharedPref: SharedPreferences =
+        application.getSharedPreferences("SAFETY", Context.MODE_PRIVATE)
     private val defaultClipboardTime = cz.kureii.raintext.R.integer.clipboardTime
+
+    private val _decryptProgress = MutableLiveData<Int>()
+    val decryptProgress: LiveData<Int> get() = _decryptProgress
+
+    private val _onDecryptionComplete = MutableLiveData(false)
+    val onDecryptionComplete: LiveData<Boolean> get() = _onDecryptionComplete
 
     val clipboardTime: MutableLiveData<Long> = MutableLiveData()
 
-    private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == "Clipboard_Time") {
-            updateClipboardTime()
+    private val preferenceChangeListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == "Clipboard_Time") {
+                updateClipboardTime()
+            }
         }
-    }
+
     private fun updateClipboardTime() {
         val storedValue = sharedPref.getInt("Clipboard_Time", defaultClipboardTime).toLong()
         clipboardTime.value = storedValue
@@ -32,7 +53,6 @@ class PasswordViewModel(application: Application) : AndroidViewModel(application
         val storedValue = sharedPref.getInt("Clipboard_Time", defaultClipboardTime).toLong()
         clipboardTime.value = storedValue
         sharedPref.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
-
     }
 
     override fun onCleared() {
@@ -52,7 +72,7 @@ class PasswordViewModel(application: Application) : AndroidViewModel(application
 
 
     fun addPassword(title: String, username: String, password: String) {
-        val newItem = PasswordItem(_passwords.value?.size ?: 0, title, username, password)
+        val newItem = PasswordItem(_passwords.value?.size ?: 0, title, username, password, ByteArray(0))
         _passwords.value?.add(newItem)
         _passwords.postValue(_passwords.value)
     }
@@ -69,7 +89,10 @@ class PasswordViewModel(application: Application) : AndroidViewModel(application
                 password = password
             )
             currentList[index] = updatedItem
-            _passwords.postValue(currentList)
+            if (currentList != null) {
+
+                _passwords.postValue(currentList!!)
+            }
         } else {
             Log.e("PasswordViewModel", "Item with ID not found $id")
         }
@@ -94,12 +117,49 @@ class PasswordViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-
     private fun refreshIds() {
         _passwords.value?.forEachIndexed { index, passwordItem ->
             passwordItem.id = index
         }
         _passwords.postValue(_passwords.value)
+    }
+
+    fun decryptPasswords() {
+        val itemCount = _passwords.value?.size ?: 0
+
+        if (itemCount > 0) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val currentList = _passwords.value
+                currentList?.let { list ->
+                    for ((index, item) in list.withIndex()) {
+                        val superString = encryptionManager.decrypt(item.encryptedData)
+                        _decryptProgress.postValue((index + 1) * 100 / list.size)
+                        val allStrings = splitString(String(superString, Charsets.UTF_8))
+                        Log.i("superstring", "superstring ${ superString.toHex()}")
+                        Log.i("superstring", "superstring ${ String(superString, Charsets.UTF_8)}")
+                        Log.i("allstrings", "allstrings ${allStrings.size}")
+                        item.encryptedData = ByteArray(0)
+
+                        item.title = allStrings[0]
+                        item.username = allStrings[1]
+                        item.password = allStrings[2]
+                    }
+                    withContext(Dispatchers.Main) {
+                        _passwords.value = list
+                    }
+                }
+                _onDecryptionComplete.postValue(true)
+            }
+        } else {
+            _onDecryptionComplete.postValue(true)
+        }
+    }
+    private fun ByteArray.toHex(): String {
+        return joinToString(separator = " ") { byte -> "%02x".format(byte) }
+    }
+    fun splitString(joinedString: String): List<String> {
+        val separator = '\u001F'  // Unit Separator
+        return joinedString.split(separator)
     }
 }
 

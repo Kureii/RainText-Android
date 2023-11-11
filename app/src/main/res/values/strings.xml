@@ -38,4 +38,10 @@
     <string name="username_copied">Username copied</string>
     <string name="item">Record</string>
     <string name="was_deleted">was deleted.</string>
+    <string name="app_shut_down">The application has been discontinued for security reasons.</string>
+    <string name="debug_tool_connected">debugging tool connected</string>
+    <string name="ok" translatable="false">ok</string>
+    <string name="emulator_detected">It has been detected that the application is running on an emulator.</string>
+    <string name="device_rooted">the device is rooted</string>
+    <string name="decrypting">Decripting: %1$d%%</string>
 </resources>
